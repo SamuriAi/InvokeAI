@@ -6,8 +6,8 @@ default: help
 help:
 	@echo Developer commands:
 	@echo
-	@echo "ruff                     Run ruff, fixing any safely-fixable errors and formatting"
-	@echo "ruff-unsafe              Run ruff, fixing all fixable errors and formatting"
+	@echo "                     Run , fixing any safely-fixable errors and formatting"
+	@echo "-unsafe              Run , fixing all fixable errors and formatting"
 	@echo "mypy                     Run mypy using the config in pyproject.toml to identify type mismatches and other coding errors"
 	@echo "mypy-all                 Run mypy ignoring the config in pyproject.tom but still ignoring missing imports"
 	@echo "test                     Run the unit tests."
@@ -21,15 +21,15 @@ help:
 	@echo "openapi                  Generate the OpenAPI schema for the app, outputting to stdout"
 	@echo "docs                     Serve the mkdocs site with live reload"
 
-# Runs ruff, fixing any safely-fixable errors and formatting
-ruff:
-	ruff check . --fix
-	ruff format .
+# Runs , fixing any safely-fixable errors and formatting
+:
+	 check . --fix
+	 format .
 
-# Runs ruff, fixing all errors it can fix and formatting
-ruff-unsafe:
-	ruff check . --fix --unsafe-fixes
-	ruff format .
+# Runs , fixing all errors it can fix and formatting
+-unsafe:
+	 check . --fix --unsafe-fixes
+	 format .
 
 # Runs mypy, using the config in pyproject.toml
 mypy:
