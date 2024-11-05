@@ -16,6 +16,7 @@ export class CanvasEntityAdapterInpaintMask extends CanvasEntityAdapterBase<
   bufferRenderer: CanvasEntityBufferObjectRenderer;
   transformer: CanvasEntityTransformer;
   filterer = undefined;
+  segmentAnything = undefined;
 
   constructor(entityIdentifier: CanvasEntityIdentifier<'inpaint_mask'>, manager: CanvasManager) {
     super(entityIdentifier, manager, 'inpaint_mask_adapter');
@@ -69,7 +70,7 @@ export class CanvasEntityAdapterInpaintMask extends CanvasEntityAdapterBase<
   };
 
   getHashableState = (): SerializableObject => {
-    const keysToOmit: (keyof CanvasInpaintMaskState)[] = ['fill', 'name', 'opacity'];
+    const keysToOmit: (keyof CanvasInpaintMaskState)[] = ['fill', 'name', 'opacity', 'isLocked'];
     return omit(this.state, keysToOmit);
   };
 

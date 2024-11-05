@@ -51,7 +51,9 @@ const useSaveCanvas = ({ region, saveToGallery, toastOk, toastError, onSave, wit
 
   const saveCanvas = useCallback(async () => {
     const rect =
-      region === 'bbox' ? canvasManager.stateApi.getBbox().rect : canvasManager.stage.getVisibleRect('raster_layer');
+      region === 'bbox'
+        ? canvasManager.stateApi.getBbox().rect
+        : canvasManager.compositor.getVisibleRectOfType('raster_layer');
 
     if (rect.width === 0 || rect.height === 0) {
       toast({
@@ -68,12 +70,19 @@ const useSaveCanvas = ({ region, saveToGallery, toastOk, toastError, onSave, wit
       metadata = selectCanvasMetadata(store.getState());
     }
 
-    const result = await withResultAsync(() =>
-      canvasManager.compositor.rasterizeAndUploadCompositeRasterLayer(rect, {
-        is_intermediate: !saveToGallery,
-        metadata,
-      })
-    );
+    const result = await withResultAsync(() => {
+      const rasterAdapters = canvasManager.compositor.getVisibleAdaptersOfType('raster_layer');
+      return canvasManager.compositor.getCompositeImageDTO(
+        rasterAdapters,
+        rect,
+        {
+          is_intermediate: !saveToGallery,
+          metadata,
+        },
+        undefined,
+        true // force upload the image to ensure it gets added to the gallery
+      );
+    });
 
     if (result.isOk()) {
       if (onSave) {
@@ -86,7 +95,6 @@ const useSaveCanvas = ({ region, saveToGallery, toastOk, toastError, onSave, wit
     }
   }, [
     canvasManager.compositor,
-    canvasManager.stage,
     canvasManager.stateApi,
     onSave,
     region,
